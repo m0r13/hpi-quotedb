@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from . quotedb import urls as quotedb_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^', include(quotedb_urls)),
 ]
