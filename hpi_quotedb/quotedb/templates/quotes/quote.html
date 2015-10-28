@@ -1,0 +1,4 @@
+<div class="quote">
+    <div><a href="{% url "quotedb.views.quotes_single" pk=quote.pk %}">{{ quote.date }}</a></div>
+    <p>{{ quote.text|linebreaksbr }}</p>
+</div>

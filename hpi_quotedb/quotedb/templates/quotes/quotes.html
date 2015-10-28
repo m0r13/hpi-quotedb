@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+    <li><a href="{% url "quotedb.views.quotes" order="newest" %}">Newest quotes</a></li>
+    <li><a href="{% url "quotedb.views.quotes" order="top" %}">Top quotes</a></li>
+    <li><a href="{% url "quotedb.views.quotes_random" %}">Random quote</a></li>
+</ul>
+
+{% if quote %}
+    {% include "quotes/quote.html" with quote=quote %}
+{% else %}
+    {% include "quotes/list_quotes.html" with quotes=quotes %}
+{% endif %}
+{% endblock %}
