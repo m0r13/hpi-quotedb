@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Quote
 
 import random
@@ -14,10 +15,24 @@ def quotes_random(request):
     context = {"quote" : Quote.objects.all()[random.randint(0, count - 1)]}
     return render(request, "quotes/quotes.html", context)
 
-def quotes(request, order, page=1):
-    quotes = Quote.objects.all()
+def quotes(request, order):
+    quote_list = Quote.objects.all()
     if order == "newest":
-        quotes = quotes.order_by("-date")
+        quote_list = quote_list.order_by("-date")
+    
+    paginator = Paginator(quote_list, 5)
+    page = request.GET.get("page")
+    quotes = None
+    try:
+        quotes = paginator.page(page)
+    except PageNotAnInteger:
+        response = redirect("quotedb.views.quotes", order=order)
+        response["Location"] = "?page=1"
+        return response
+    except EmptyPage:
+        response = redirect("quotedb.views.quotes", order=order)
+        response["Location"] = "?page=%d" % paginator.num_pages
+        return response
     context = {"quotes" : quotes}
     return render(request, "quotes/quotes.html", context)
 
