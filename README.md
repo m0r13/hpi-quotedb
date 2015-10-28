@@ -7,8 +7,8 @@ TODO:
 - [ ] Zitate (anonym?) hinzufügen
 - [ ] Zitate reviewen bevor sie veröffentlicht werden
 - [ ] Zitate browsen
-  - [ ] random
-  - [ ] newest
+  - [x] random
+  - [x] newest
   - [ ] top rated
   - [ ] by häshtag
 - [ ] Zitate upvote/downvote, wie genau anonym?
