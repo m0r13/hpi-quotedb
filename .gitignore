@@ -58,3 +58,6 @@ target/
 
 # django
 *.sqlite3
+
+# tmp files
+*.swp
