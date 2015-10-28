@@ -41,7 +41,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">HPI Quote Database</a>
+          <a class="navbar-brand" href="{% url "quotedb:index" %}">HPI Quote Database</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -54,7 +54,11 @@
     </nav>
 
     <div class="container">
-
+      
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+      
       {% block content %}
       <div class="starter-template">
         <h1>Bootstrap starter template</h1>

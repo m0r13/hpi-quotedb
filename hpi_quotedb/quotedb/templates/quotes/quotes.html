@@ -2,9 +2,10 @@
 
 {% block content %}
 <ul>
-    <li><a href="{% url "quotedb.views.quotes" order="newest" %}">Newest quotes</a></li>
-    <li><a href="{% url "quotedb.views.quotes" order="top" %}">Top quotes</a></li>
-    <li><a href="{% url "quotedb.views.quotes_random" %}">Random quote</a></li>
+    <li><a href="{% url "quotedb:submit_quote" %}">Submit quote</a></li>
+    <li><a href="{% url "quotedb:quotes" order="newest" %}">Newest quotes</a></li>
+    <li><a href="{% url "quotedb:quotes" order="top" %}">Top quotes</a></li>
+    <li><a href="{% url "quotedb:random_quote" %}">Random quote</a></li>
 </ul>
 
 {% if quote %}

@@ -20,5 +20,5 @@ from . quotedb import urls as quotedb_urls
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^', include(quotedb_urls)),
+    url(r'^', include(quotedb_urls, namespace="quotedb")),
 ]
