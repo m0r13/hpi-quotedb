@@ -5,12 +5,15 @@ HPI Quote Database.
 TODO:
 
 - [ ] Zitate (anonym?) hinzufügen
-- [ ] Zitate reviewen bevor sie veröffentlicht werden
+  - [x] Form zum Zitate hinzufügen, neue Zitate sind erstmal unsichtbar
+  - [ ] Email an Admin oder so damit der Bescheid weiß wegen Reviewen
 - [ ] Zitate browsen
   - [x] random
   - [x] newest
-  - [ ] top rated
+  - [x] top rated
   - [ ] by häshtag
-- [ ] Zitate upvote/downvote, wie genau anonym?
+- [ ] Zitate voting
+  - [x] Gute Lösung fürs "anonym" finden
+  - [ ] Wie genau jetzt das Voting mit Up/Downvote?
 - [ ] Zitate reporten?
 - [ ] Auth allgemein? Über Apache mit dem HPI Kerberos damit man in der App "anonym" bleibt?
