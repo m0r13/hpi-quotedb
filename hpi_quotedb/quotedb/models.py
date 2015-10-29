@@ -34,13 +34,30 @@ class Vote(models.Model):
     @staticmethod
     def generate_vote_hash(quote, user):
         string = str(quote.pk) + user + VoteKey.get()
-        return hashlib.md5(string).hexdigest()
+        return hashlib.md5(string.encode("utf-8")).hexdigest()
 
 class Quote(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField(default="")
     visible = models.BooleanField(default=False)
+    voting = models.IntegerField(default=0)
 
+    def update_votes(self):
+        votes = Vote.objects.all().filter(quote=self)
+        old_voting = self.voting
+        self.voting = votes.filter(value=1).count() - votes.filter(value=-1).count()
+        if old_voting != self.voting:
+            self.save()
+
+    def process_voted(self, request):
+        hash = Vote.generate_vote_hash(self, request.META.get("REMOTE_USER", "dummy"))
+        votes = Vote.objects.all().filter(quote=self, hash=hash)
+        if votes.count() == 0:
+            self.voted = 0
+        else:
+            self.voted = votes[0].value
+        return self
+    
     @property
     def upvotes(self):
         return Vote.objects.filter(quote=self, value=1).count()

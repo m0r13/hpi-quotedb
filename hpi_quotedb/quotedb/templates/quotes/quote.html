@@ -2,6 +2,19 @@
     <div><a href="{% url "quotedb:single_quote" pk=quote.pk %}">{{ quote.date }}</a></div>
     <div>{{ quote.text|linebreaksbr }}</div>
     <div>
-        Upvotes: {{ quote.upvotes }}, Downvotes: {{ quote.downvotes }}
+        Upvotes: {{ quote.upvotes }},
+        Downvotes: {{ quote.downvotes }}
+
+        {% if quote.voted == 1 %}
+          <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>+1</b></a>
+        {% else %}
+          <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="1" %}?return={{ request.get_full_path|urlencode }}">+1</a>
+        {% endif %}
+
+        {% if quote.voted == -1 %}
+          <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>-1</b></a>
+        {% else %}
+          <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="-1" %}?return={{ request.get_full_path|urlencode }}">-1</a>
+        {% endif %}
     </div>
 </div>
