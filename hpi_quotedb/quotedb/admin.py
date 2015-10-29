@@ -5,5 +5,5 @@ from .models import Quote
 
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
-    list_display = ("date", "text")
+    list_display = ("date", "text", "visible")
 
