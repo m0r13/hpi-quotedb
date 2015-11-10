@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms import ModelForm
@@ -57,7 +58,7 @@ def quotes(request, order="newest"):
     for quote in quote_list:
         quote.process_voted(request)
     
-    paginator = Paginator(quote_list, 5)
+    paginator = Paginator(quote_list, settings.QUOTEDB_QUOTES_PER_PAGE)
     page = request.GET.get("page")
     quotes = None
     try:

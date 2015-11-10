@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'hpi_quotedb.quotedb.context_processors.quotedb_settings',
             ],
         },
     },
@@ -108,3 +109,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+QUOTEDB_TITLE = "HPI Quote Database"
+
+QUOTEDB_QUOTES_PER_PAGE = 10
+
