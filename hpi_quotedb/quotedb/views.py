@@ -47,10 +47,11 @@ def single_quote(request, pk):
 
 def random_quote(request):
     count = Quote.objects.all().filter(visible=True).count()
-    context = {"quote" : Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)}
+    quote = Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)
+    context = {"title" : "Random quote", "quote" : quote}
     return render(request, "quotes/quotes.html", context)
 
-def show_quotes(request, redirect_if_invalid, quote_list):
+def show_quotes(request, redirect_if_invalid, title, quote_list):
     paginator = Paginator(quote_list, settings.QUOTEDB_QUOTES_PER_PAGE)
     page = request.GET.get("page")
     quotes = None
@@ -64,20 +65,26 @@ def show_quotes(request, redirect_if_invalid, quote_list):
         response = redirect_if_invalid
         response["Location"] += "?page=%d" % paginator.num_pages
         return response
-    context = {"quotes" : quotes}
+    context = {"title" : title, "quotes" : quotes}
     return render(request, "quotes/quotes.html", context)
 
 def quotes(request, order="newest"):
+    title = ""
     quote_list = Quote.objects.all().filter(visible=True)
     if order == "newest":
+        title = "Newest quotes"
         quote_list = quote_list.order_by("-date")
     elif order == "top":
+        title = "Top quotes"
         quote_list = quote_list.order_by("-voting")
     for quote in quote_list:
         quote.process_voted(request)
-    return show_quotes(request, redirect("quotedb:quotes", order=order), quote_list)
+    return show_quotes(request, redirect("quotedb:quotes", order=order), title, quote_list)
 
 def quotes_by_tag(request, tag):
     tag = get_object_or_404(Tag, name=tag)
+    title = "Quotes with tag #%s" % tag.name
     quotes = Quote.objects.filter(tags=tag)
-    return show_quotes(request, redirect("quotedb:quotes_by_tag", tag=tag.name), quotes)
+    for quote in quotes:
+        quote.process_voted(request)
+    return show_quotes(request, redirect("quotedb:quotes_by_tag", tag=tag.name), title, quotes)

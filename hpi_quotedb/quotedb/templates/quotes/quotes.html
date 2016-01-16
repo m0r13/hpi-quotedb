@@ -8,6 +8,8 @@
     <li><a href="{% url "quotedb:random_quote" %}">Random quote</a></li>
 </ul>
 
+<h2>{{ title }}</h2>
+
 {% if quote %}
     {% include "quotes/quote.html" with quote=quote %}
 {% else %}

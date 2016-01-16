@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 
+<h2>Submit quote</h2>
+
 {% block content %}
 <form action="{% url "quotedb:submit_quote" %}" method="POST" role="form">
     {% csrf_token %}
