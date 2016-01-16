@@ -4,7 +4,7 @@ import hashlib
 import random
 import string
 
-from .util import get_username
+from hpi_quotedb.quotedb.util import get_username
 
 # Create your models here.
 
