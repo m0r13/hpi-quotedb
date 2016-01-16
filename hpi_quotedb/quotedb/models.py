@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import html
 
 import hashlib
 import random
@@ -16,6 +17,13 @@ class Tag(models.Model):
         ordering = ["name"]
 
     name = models.CharField(max_length=255, blank=False, unique=True)
+
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse("quotedb:quotes_by_tag", kwargs={"tag" : self.name})
+
+    def hashtag(self):
+        return html.mark_safe("<a href='%s'>#%s</a>" % (self.get_absolute_url(), html.escape(self.name)))
 
     def __str__(self):
         return "#%s" % self.name

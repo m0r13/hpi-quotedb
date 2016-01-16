@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms import ModelForm
-from .models import Quote, Vote
+from .models import Tag, Quote, Vote
 from .util import get_username
 
 import random
@@ -50,6 +50,23 @@ def random_quote(request):
     context = {"quote" : Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)}
     return render(request, "quotes/quotes.html", context)
 
+def show_quotes(request, redirect_if_invalid, quote_list):
+    paginator = Paginator(quote_list, settings.QUOTEDB_QUOTES_PER_PAGE)
+    page = request.GET.get("page")
+    quotes = None
+    try:
+        quotes = paginator.page(page)
+    except PageNotAnInteger:
+        response = redirect_if_invalid
+        response["Location"] += "?page=1"
+        return response
+    except EmptyPage:
+        response = redirect_if_invalid
+        response["Location"] += "?page=%d" % paginator.num_pages
+        return response
+    context = {"quotes" : quotes}
+    return render(request, "quotes/quotes.html", context)
+
 def quotes(request, order="newest"):
     quote_list = Quote.objects.all().filter(visible=True)
     if order == "newest":
@@ -58,20 +75,9 @@ def quotes(request, order="newest"):
         quote_list = quote_list.order_by("-voting")
     for quote in quote_list:
         quote.process_voted(request)
-    
-    paginator = Paginator(quote_list, settings.QUOTEDB_QUOTES_PER_PAGE)
-    page = request.GET.get("page")
-    quotes = None
-    try:
-        quotes = paginator.page(page)
-    except PageNotAnInteger:
-        response = redirect("quotedb:quotes", order=order)
-        response["Location"] += "?page=1"
-        return response
-    except EmptyPage:
-        response = redirect("quotedb:quotes", order=order)
-        response["Location"] += "?page=%d" % paginator.num_pages
-        return response
-    context = {"quotes" : quotes}
-    return render(request, "quotes/quotes.html", context)
+    return show_quotes(request, redirect("quotedb:quotes", order=order), quote_list)
 
+def quotes_by_tag(request, tag):
+    tag = get_object_or_404(Tag, name=tag)
+    quotes = Quote.objects.filter(tags=tag)
+    return show_quotes(request, redirect("quotedb:quotes_by_tag", tag=tag.name), quotes)

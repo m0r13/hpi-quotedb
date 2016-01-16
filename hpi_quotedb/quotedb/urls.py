@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^quotes/random$', views.random_quote, name="random_quote"),
     url(r'^quotes$', views.quotes),
     url(r'^quotes/(?P<order>newest|top)$', views.quotes, name="quotes"),
+    url(r'^quotes/tag/(?P<tag>.*)$', views.quotes_by_tag, name="quotes_by_tag"),
 ]
 
