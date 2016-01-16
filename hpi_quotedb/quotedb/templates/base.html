@@ -44,10 +44,15 @@
           <a class="navbar-brand" href="{% url "quotedb:index" %}">{{ QUOTEDB_TITLE }}</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <!--<li class="active"><a href="#">Home</a></li>
+          <!--<ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>-->
+            <li><a href="#contact">Contact</a></li>
+          </ul>-->
+          <ul class="nav navbar-nav navbar-right">
+            {% if QUOTEDB_USER %}
+            <li><a href="#">(Debug) Username: {{ QUOTEDB_USER }}</a></li>
+            {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

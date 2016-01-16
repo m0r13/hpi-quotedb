@@ -4,6 +4,8 @@ import hashlib
 import random
 import string
 
+from .util import get_username
+
 # Create your models here.
 
 def random_string(length):
@@ -50,7 +52,7 @@ class Quote(models.Model):
             self.save()
 
     def process_voted(self, request):
-        hash = Vote.generate_vote_hash(self, request.META.get("REMOTE_USER", "dummy"))
+        hash = Vote.generate_vote_hash(self, get_username(request))
         votes = Vote.objects.all().filter(quote=self, hash=hash)
         if votes.count() == 0:
             self.voted = 0

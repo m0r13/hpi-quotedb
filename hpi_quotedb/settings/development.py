@@ -112,6 +112,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 QUOTEDB_TITLE = "HPI Quote Database"
-
 QUOTEDB_QUOTES_PER_PAGE = 10
+QUOTEDB_DEBUG_USERNAME = True
 
