@@ -32,7 +32,7 @@ def submit_quote(request):
 def vote_quote(request, pk, vote):
     quote = get_object_or_404(Quote, visible=True, pk=pk)
 
-    hash = Vote.generate_vote_hash(quote, util.get_username(request))
+    hash = Vote.generate_vote_hash(quote, get_username(request))
     votes = Vote.objects.all().filter(quote=quote, hash=hash)
     if votes.count() == 0:
         Vote.objects.create(quote=quote, value=vote, hash=hash)
