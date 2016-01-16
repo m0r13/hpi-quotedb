@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from hpi_quotedb.quotedb.util import get_username
+from .util import get_username
 
 def quotedb_settings(request):
     d = {}
