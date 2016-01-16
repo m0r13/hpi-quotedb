@@ -11,6 +11,15 @@ from .util import get_username
 def random_string(length):
     return "".join([ random.choice(string.ascii_letters + string.digits) for i in range(length) ])
 
+class Tag(models.Model):
+    class Meta:
+        ordering = ["name"]
+
+    name = models.CharField(max_length=255, blank=False, unique=True)
+
+    def __str__(self):
+        return "#%s" % self.name
+
 class VoteKey(models.Model):
     key = models.CharField(blank=True, default="", max_length=255)
 
@@ -41,6 +50,7 @@ class Vote(models.Model):
 class Quote(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField(default="")
+    tags = models.ManyToManyField(Tag, blank=True)
     visible = models.BooleanField(default=False)
     voting = models.IntegerField(default=0)
 
