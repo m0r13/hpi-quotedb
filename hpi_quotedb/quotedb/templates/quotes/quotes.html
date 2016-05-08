@@ -6,6 +6,12 @@
     <li><a href="{% url "quotedb:quotes" order="newest" %}">Newest quotes</a></li>
     <li><a href="{% url "quotedb:quotes" order="top" %}">Top quotes</a></li>
     <li><a href="{% url "quotedb:random_quote" %}">Random quote</a></li>
+    <li>
+        Tags:
+        {% for tag, count in tag_cloud %}
+            <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </li>
 </ul>
 
 <h2>{{ title }}</h2>

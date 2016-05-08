@@ -28,6 +28,18 @@ class Tag(models.Model):
     def __str__(self):
         return "#%s" % self.name
 
+    @staticmethod
+    def get_tag_cloud():
+        tags = Tag.objects.all()
+        cloud = []
+        for tag in tags:
+            # TODO automatically delete where count=0 ?
+            count = Quote.objects.filter(tags=tag).count()
+            if count != 0:
+                cloud.append((tag, count))
+        cloud.sort(reverse=True, key=lambda t: t[1])
+        return cloud
+
 class VoteKey(models.Model):
     key = models.CharField(blank=True, default="", max_length=255)
 
