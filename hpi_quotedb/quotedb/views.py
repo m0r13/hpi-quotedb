@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField, ValidationError
+from django.utils.translation import ugettext as _
 from .models import Tag, Quote, Vote
 from .util import get_username
 
@@ -14,6 +15,28 @@ class QuoteForm(ModelForm):
     class Meta:
         model = Quote
         fields = ["text"]
+
+    tags = CharField(max_length=255)
+
+    def clean_tags(self):
+        tags = self.cleaned_data.get("tags", "")
+        parsed_tags = set()
+        for tag in tags.split(" "):
+            tag = tag.strip().replace("#", "")
+            if not tag:
+                continue
+            if not tag.isalnum():
+                raise ValidationError(_("Invalid tag value (must be alphanumeric): %(value)s"), code="invalid", params={"value" : tag})
+            parsed_tags.add(tag)
+        return parsed_tags
+
+    def save(self, commit=True):
+        instance = super(QuoteForm, self).save(commit=commit)
+        for tag in self.cleaned_data.get("tags", set()):
+            instance.tags.add(Tag.objects.get_or_create(name=tag)[0])
+        if commit:
+            instance.save()
+        return instance
 
 def submit_quote(request):
     form = None
