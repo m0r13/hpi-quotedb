@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'hpi_quotedb.quotedb.context_processors.quotedb_settings',
+                'hpi_quotedb.quotedb.context_processors.quotedb_tagcloud',
             ],
         },
     },

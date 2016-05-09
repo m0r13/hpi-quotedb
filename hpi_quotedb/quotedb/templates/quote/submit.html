@@ -47,7 +47,7 @@ window.addEventListener("load", function() {
     {{ form|bootstrap }}
     <span class="help-block">
         Tags:
-        {% for tag, count in tag_cloud %}
+        {% for tag, count in tagcloud %}
             <a class="tag-helper" href="#" data-tag="{{ tag.name }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
 

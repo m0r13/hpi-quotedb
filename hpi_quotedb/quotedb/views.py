@@ -49,7 +49,7 @@ def submit_quote(request):
             return redirect("quotedb:quotes", order="newest")
     else:
         form = QuoteForm()
-    context = {"form" : form, "tag_cloud" : Tag.get_tag_cloud()}
+    context = {"form" : form}
     return render(request, "quote/submit.html", context)
 
 def vote_quote(request, pk, vote):
@@ -65,13 +65,13 @@ def vote_quote(request, pk, vote):
     return redirect(request.GET.get("return"))
 
 def single_quote(request, pk):
-    context = {"quote" : get_object_or_404(Quote, visible=True, pk=pk).process_voted(request), "tag_cloud" : Tag.get_tag_cloud()}
+    context = {"quote" : get_object_or_404(Quote, visible=True, pk=pk).process_voted(request)}
     return render(request, "quotes/quotes.html", context)
 
 def random_quote(request):
     count = Quote.objects.all().filter(visible=True).count()
     quote = Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)
-    context = {"title" : "Random quote", "quote" : quote, "tag_cloud" : Tag.get_tag_cloud()}
+    context = {"title" : "Random quote", "quote" : quote}
     return render(request, "quotes/quotes.html", context)
 
 def show_quotes(request, redirect_if_invalid, title, quote_list):
@@ -88,7 +88,7 @@ def show_quotes(request, redirect_if_invalid, title, quote_list):
         response = redirect_if_invalid
         response["Location"] += "?page=%d" % paginator.num_pages
         return response
-    context = {"title" : title, "quotes" : quotes, "tag_cloud" : Tag.get_tag_cloud()}
+    context = {"title" : title, "quotes" : quotes}
     return render(request, "quotes/quotes.html", context)
 
 def quotes(request, order="newest"):

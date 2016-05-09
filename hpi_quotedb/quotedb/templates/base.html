@@ -59,17 +59,36 @@
     </nav>
 
     <div class="container">
-      
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-      {% endfor %}
-      
-      {% block content %}
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-      {% endblock %}
+        <div class="row">
+            <div class="col-md-8">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <a href="{% url "quotedb:submit_quote" %}" role="button" class="btn btn-default">Submit quote</a>
+                        <a href="{% url "quotedb:quotes" order="newest" %}" role="button" class="btn btn-default">Newest quotes</a>
+                        <a href="{% url "quotedb:quotes" order="top" %}" role="button" class="btn btn-default">Top quotes</a>
+                        <a href="{% url "quotedb:random_quote" %}" role="button" class="btn btn-default">Random quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                Tags:
+                {% for tag, count in tagcloud %}
+                    <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8" style="padding-top: 40px">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
 
     </div><!-- /.container -->
 
