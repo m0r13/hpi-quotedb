@@ -42,6 +42,12 @@ window.addEventListener("load", function() {
 });
 </script>
 
+{% if QUOTEDB_SUBMIT_NOTICE %}
+<div class="alert alert-info" role="alert">
+    {{ QUOTEDB_SUBMIT_NOTICE|safe }}
+</div>
+{% endif %}
+
 <form action="{% url "quotedb:submit_quote" %}" method="POST" role="form">
     {% csrf_token %}
     {{ form|bootstrap }}

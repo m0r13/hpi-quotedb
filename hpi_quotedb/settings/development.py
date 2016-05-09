@@ -115,4 +115,5 @@ STATIC_URL = '/static/'
 QUOTEDB_TITLE = "HPI Quote Database"
 QUOTEDB_QUOTES_PER_PAGE = 10
 QUOTEDB_DEBUG_USERNAME = True
+QUOTEDB_SUBMIT_NOTICE = "<b>Submit notice:</b> Example."
 
