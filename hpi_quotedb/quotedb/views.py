@@ -49,7 +49,7 @@ def submit_quote(request):
             return redirect("quotedb:quotes", order="newest")
     else:
         form = QuoteForm()
-    context = {"form" : form}
+    context = {"form" : form, "tag_cloud" : Tag.get_tag_cloud()}
     return render(request, "quote/submit.html", context)
 
 def vote_quote(request, pk, vote):
