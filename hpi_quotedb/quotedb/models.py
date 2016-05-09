@@ -34,7 +34,7 @@ class Tag(models.Model):
         cloud = []
         for tag in tags:
             # TODO automatically delete where count=0 ?
-            count = Quote.objects.filter(tags=tag).count()
+            count = Quote.objects.filter(tags=tag, visible=True).count()
             if count != 0:
                 cloud.append((tag, count))
         cloud.sort(reverse=True, key=lambda t: t[1])
