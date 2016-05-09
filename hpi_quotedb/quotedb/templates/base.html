@@ -69,24 +69,25 @@
                         <a href="{% url "quotedb:random_quote" %}" role="button" class="btn btn-default">Random quote</a>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-md-4">
-                Tags:
-                {% for tag, count in tagcloud %}
-                    <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-8" style="padding-top: 40px">
+                <div style="padding-top: 20px"></div>
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}">{{ message }}</div>
                 {% endfor %}
 
                 {% block content %}
                 {% endblock %}
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default panel-info">
+                    <div class="panel-heading">Quotes by tag</div>
+                    <div class="panel-body">
+                        {% for tag, count in tagcloud %}
+                        <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
 
