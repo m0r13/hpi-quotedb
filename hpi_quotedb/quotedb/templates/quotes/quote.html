@@ -27,34 +27,55 @@
 </div>
 -->
 
+<style>
+.text-success a:link, .text-danger a:link, .text-success a:visited, .text-danger a:visited {
+    color: inherit;
+}
+</style>
+
 <div class="panel panel-default">
-    <div class="panel-heading"><a href="{% url "quotedb:single_quote" pk=quote.pk %}">{{ quote.date }}</a></div>
+    <div class="panel-heading">
+        <span class="pull-right">
+            <span class="text-success">
+                {% if quote.voted == 1 %}
+                    <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>
+                {% else %}
+                    <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="1" %}?return={{ request.get_full_path|urlencode }}">
+                {% endif %}
+                <span class="glyphicon glyphicon-chevron-up"></span> {{ quote.upvotes }}
+                {% if quote.voted == 1 %}
+                    </b></a>
+                {% else %}
+                    </a>
+                {% endif %}
+            </span>
+            <span class="text-danger">
+                {% if quote.voted == -1 %}
+                    <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>
+                {% else %}
+                    <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="-1" %}?return={{ request.get_full_path|urlencode }}">
+                {% endif %}
+                <span class="glyphicon glyphicon-chevron-down"></span> {{ quote.downvotes }}
+                {% if quote.voted == -1 %}
+                    </b></a>
+                {% else %}
+                    </a>
+                {% endif %}
+            </span>
+        </span>
+        <a href="{% url "quotedb:single_quote" pk=quote.pk %}">{{ quote.date }}</a>
+    </div>
     <div class="panel-body">
         <div>
             {{ quote.text|linebreaksbr }}
         </div>
 
+        {% if quote.tags.all.count != 0 %}
         <div style="margin-top: 20px">
             {% for tag in quote.tags.all %}
                 {{ tag.hashtag }}
             {% endfor %}
         </div>
-
-        <div>
-            Upvotes: {{ quote.upvotes }},
-            Downvotes: {{ quote.downvotes }}
-
-            {% if quote.voted == 1 %}
-              <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>+1</b></a>
-            {% else %}
-              <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="1" %}?return={{ request.get_full_path|urlencode }}">+1</a>
-            {% endif %}
-
-            {% if quote.voted == -1 %}
-              <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="0" %}?return={{ request.get_full_path|urlencode }}"><b>-1</b></a>
-            {% else %}
-              <a href="{% url "quotedb:vote_quote" pk=quote.pk vote="-1" %}?return={{ request.get_full_path|urlencode }}">-1</a>
-            {% endif %}
-        </div>
+        {% endif %}
     </div>
 </div>
