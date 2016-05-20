@@ -49,7 +49,7 @@ def submit_quote(request):
             return redirect("quotedb:quotes", order="newest")
     else:
         form = QuoteForm()
-    context = {"form" : form}
+    context = {"form" : form, "current_page" : "submit"}
     return render(request, "quote/submit.html", context)
 
 def vote_quote(request, pk, vote):
@@ -65,16 +65,16 @@ def vote_quote(request, pk, vote):
     return redirect(request.GET.get("return"))
 
 def single_quote(request, pk):
-    context = {"quote" : get_object_or_404(Quote, visible=True, pk=pk).process_voted(request)}
+    context = {"quote" : get_object_or_404(Quote, visible=True, pk=pk).process_voted(request), "current_page" : "single"}
     return render(request, "quotes/quotes.html", context)
 
 def random_quote(request):
     count = Quote.objects.all().filter(visible=True).count()
     quote = Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)
-    context = {"title" : "Random quote", "quote" : quote}
+    context = {"title" : "Random quote", "quote" : quote, "current_page" : "random"}
     return render(request, "quotes/quotes.html", context)
 
-def show_quotes(request, redirect_if_invalid, title, quote_list):
+def show_quotes(request, redirect_if_invalid, title, current_page, quote_list):
     paginator = Paginator(quote_list, settings.QUOTEDB_QUOTES_PER_PAGE)
     page = request.GET.get("page")
     quotes = None
@@ -88,7 +88,9 @@ def show_quotes(request, redirect_if_invalid, title, quote_list):
         response = redirect_if_invalid
         response["Location"] += "?page=%d" % paginator.num_pages
         return response
-    context = {"title" : title, "quotes" : quotes}
+    context = {"title" : title, "quotes" : quotes, "current_page" : current_page}
+    if type(current_page) == tuple:
+        context.update({"current_page" : "tag", "current_tag" : current_page[1]})
     return render(request, "quotes/quotes.html", context)
 
 def quotes(request, order="newest"):
@@ -102,7 +104,7 @@ def quotes(request, order="newest"):
         quote_list = quote_list.order_by("-voting")
     for quote in quote_list:
         quote.process_voted(request)
-    return show_quotes(request, redirect("quotedb:quotes", order=order), title, quote_list)
+    return show_quotes(request, redirect("quotedb:quotes", order=order), title, order, quote_list)
 
 def quotes_by_tag(request, tag):
     tag = get_object_or_404(Tag, name=tag)
@@ -110,4 +112,4 @@ def quotes_by_tag(request, tag):
     quotes = Quote.objects.filter(tags=tag)
     for quote in quotes:
         quote.process_voted(request)
-    return show_quotes(request, redirect("quotedb:quotes_by_tag", tag=tag.name), title, quotes)
+    return show_quotes(request, redirect("quotedb:quotes_by_tag", tag=tag.name), title, ("tag", tag.name), quotes)

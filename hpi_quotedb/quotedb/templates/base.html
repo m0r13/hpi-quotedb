@@ -63,10 +63,10 @@
             <div class="col-md-8">
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group" role="group">
-                        <a href="{% url "quotedb:submit_quote" %}" role="button" class="btn btn-default">Submit quote</a>
-                        <a href="{% url "quotedb:quotes" order="newest" %}" role="button" class="btn btn-default">Newest quotes</a>
-                        <a href="{% url "quotedb:quotes" order="top" %}" role="button" class="btn btn-default">Top quotes</a>
-                        <a href="{% url "quotedb:random_quote" %}" role="button" class="btn btn-default">Random quote</a>
+                        <a href="{% url "quotedb:submit_quote" %}" role="button" class="btn btn-default {% if current_page == "submit" %}active{% endif %}">Submit quote</a>
+                        <a href="{% url "quotedb:quotes" order="newest" %}" role="button" class="btn btn-default {% if current_page == "newest" %}active{% endif %}">Newest quotes</a>
+                        <a href="{% url "quotedb:quotes" order="top" %}" role="button" class="btn btn-default {% if current_page == "top" %}active{% endif %}">Top quotes</a>
+                        <a href="{% url "quotedb:random_quote" %}" role="button" class="btn btn-default {% if current_page == "random" %}active{% endif %}">Random quote</a>
                     </div>
                 </div>
 
@@ -84,7 +84,10 @@
                     <div class="panel-heading">Quotes by tag</div>
                     <div class="panel-body">
                         {% for tag, count in tagcloud %}
-                        <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>{% if not forloop.last %},{% endif %}
+                        {% if current_page == "tag" and current_tag == tag.name %}<b>{% endif %}
+                        <a href="{{ tag.get_absolute_url }}">#{{ tag.name }} ({{ count }})</a>
+                        {% if current_page == "tag" and current_tag == tag.name %}</b>{% endif %}
+                        {% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </div>
                 </div>
