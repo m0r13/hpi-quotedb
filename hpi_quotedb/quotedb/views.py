@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -72,7 +72,7 @@ def single_quote(request, pk):
 
 def random_quote(request):
     count = Quote.objects.all().filter(visible=True).count()
-    quote = Quote.objects.filter(visible=True).all()[random.randint(0, count - 1)].process_voted(request)
+    quote = get_list_or_404(Quote, visible=True)[random.randint(0, count - 1)].process_voted(request)
     context = {"title" : "Random quote", "quote" : quote, "current_page" : "random"}
     return render(request, "quotes/quotes.html", context)
 
