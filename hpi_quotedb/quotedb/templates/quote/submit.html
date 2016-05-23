@@ -42,9 +42,9 @@ window.addEventListener("load", function() {
 });
 </script>
 
-{% if QUOTEDB_SUBMIT_NOTICE %}
+{% if QUOTEDB_PRE_SUBMIT_NOTICE %}
 <div class="alert alert-info" role="alert">
-    {{ QUOTEDB_SUBMIT_NOTICE|safe }}
+    {{ QUOTEDB_PRE_SUBMIT_NOTICE|safe }}
 </div>
 {% endif %}
 

@@ -16,7 +16,7 @@ class QuoteForm(ModelForm):
         model = Quote
         fields = ["text"]
 
-    tags = CharField(max_length=255)
+    tags = CharField(max_length=255, required=False)
 
     def clean_tags(self):
         tags = self.cleaned_data.get("tags", "")
@@ -43,8 +43,10 @@ def submit_quote(request):
     if request.method == "POST":
         form = QuoteForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.info(request, "Thanks for submitting a quote!")
+            instance = form.save()
+            instance.visible = not settings.QUOTEDB_VERIFY_QUOTES
+            instance.save()
+            messages.info(request, settings.QUOTEDB_POST_SUBMIT_NOTICE)
             # TODO inform admin about new quote and review
             return redirect("quotedb:quotes", order="newest")
     else:

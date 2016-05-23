@@ -114,6 +114,9 @@ STATIC_URL = '/static/'
 
 QUOTEDB_TITLE = "HPI Quote Database"
 QUOTEDB_QUOTES_PER_PAGE = 10
+QUOTEDB_PRE_SUBMIT_NOTICE = "You can submit your quotes here. Please keep in mind that quotes will not be visible after being reviewed by an admin."
+QUOTEDB_POST_SUBMIT_NOTICE = "Thanks for submitting a quote! Your quote will be visible soon after a review."
+QUOTEDB_VERIFY_QUOTES = True
+
 QUOTEDB_DEBUG_USERNAME = True
-QUOTEDB_SUBMIT_NOTICE = "<b>Submit notice:</b> Example."
 
