@@ -16,7 +16,7 @@ class Tag(models.Model):
     class Meta:
         ordering = ["name"]
 
-    name = models.CharField(max_length=255, blank=False, unique=True)
+    name = models.CharField(max_length=64, blank=False, unique=True)
 
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Tag',
             fields=[
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('name', models.TextField(unique=True)),
+                ('name', models.TextField()),
             ],
         ),
         migrations.AddField(
