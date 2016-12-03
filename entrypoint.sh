@@ -7,10 +7,10 @@ python - <<EOF
 #!/usr/share/env python3
 import _mysql
 import os
-connection = _mysql.connect(os.environ['HPI_QUOTEDB_DB_HOST'],
-		os.environ['HPI_QUOTEDB_DB_USER'],
-		os.environ['HPI_QUOTEDB_DB_PASSWORD'])
-connection.query("CREATE DATABASE IF NOT EXISTS " + os.environ['HPI_QUOTEDB_DB_NAME'])
+connection = _mysql.connect(os.environ['QUOTEDB_DB_HOST'],
+		os.environ['QUOTEDB_DB_USER'],
+		os.environ['QUOTEDB_DB_PASSWORD'])
+connection.query("CREATE DATABASE IF NOT EXISTS " + os.environ['QUOTEDB_DB_NAME'])
 connection.close()
 EOF
 

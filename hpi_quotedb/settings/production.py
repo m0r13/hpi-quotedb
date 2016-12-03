@@ -3,6 +3,8 @@ import os
 
 QUOTEDB_DEBUG_USERNAME = False
 
+ALLOWED_HOSTS = ["quotedb"]
+
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
